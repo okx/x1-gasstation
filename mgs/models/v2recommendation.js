@@ -8,21 +8,24 @@ module.exports = class v2Recommendation {
   blockTime = NaN
   blockNumber = NaN
 
+  toNineDecimal(x) {
+    return Number.isInteger(x) ? x : Number(x).toFixed(9);
+  }
   // updates gas price recommendation with latest values
   updateGasPrices(safeLow, standard, fast, baseFee, blockNumber, blockTime) {
       this.safeLow = {
-        maxPriorityFee: safeLow,
-        maxFee: safeLow + baseFee
+        maxPriorityFee: this.toNineDecimal(safeLow),
+        maxFee: this.toNineDecimal(safeLow + baseFee)
       }
       this.standard = {
-        maxPriorityFee: standard,
-        maxFee: standard + baseFee
+        maxPriorityFee: this.toNineDecimal(standard),
+        maxFee: this.toNineDecimal(standard + baseFee)
       }
       this.fast = {
-        maxPriorityFee: fast,
-        maxFee: fast + baseFee
+        maxPriorityFee: this.toNineDecimal(fast),
+        maxFee: this.toNineDecimal(fast + baseFee)
       }
-      this.estimatedBaseFee = baseFee
+      this.estimatedBaseFee = this.toNineDecimal(baseFee)
       this.blockNumber = blockNumber
       this.blockTime = blockTime
   }
