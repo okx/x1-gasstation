@@ -10,7 +10,7 @@ env:
   ECR_REPOSITORY: gasstation-ecr
   ECS_SERVICE: gasstation-ecs-service
   ECS_CLUSTER: gasstation-ecs-cluster 
-  ECS_TASK_DEFINITION: mainnet-taskdef.json
+  ECS_TASK_DEFINITION: mgs/mainnet-taskdef.json
   CONTAINER_NAME: gasstation
 
 
