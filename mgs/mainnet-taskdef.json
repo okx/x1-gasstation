@@ -20,7 +20,7 @@
                 "secretOptions": [
                     {
                         "name": "apiKey",
-                        "valueFrom": "arn:aws:ssm:us-east-1:042947190491:parameter/gasstation/DATADOG_APIKEY"
+                        "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/DATADOG_APIKEY"
                     }
                 ]
             },
@@ -68,11 +68,11 @@
             "workingDirectory": null,
             "secrets": [
                 {
-                    "valueFrom": "arn:aws:ssm:us-east-1:042947190491:parameter/gasstation/API",
+                    "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/API",
                     "name": "API"
                 },
                 {
-                    "valueFrom": "arn:aws:ssm:us-east-1:042947190491:parameter/gasstation/RPC",
+                    "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/RPC",
                     "name": "RPC"
                 }
               ],
