@@ -2,7 +2,7 @@ const axios = require("axios");
 const config = require("../../../config/config").default;
 
 // fetch latest prices, and set recommendations - v1
-const v1fetchPrices = async (_rec) => {
+const posV1FetchPrices = async (_rec) => {
     axios.get(config.api).then((response) => {
         const result = response.data.result;
         const blockTime =
@@ -23,4 +23,4 @@ const v1fetchPrices = async (_rec) => {
     });
 };
 
-export default v1fetchPrices;
+export default posV1FetchPrices;

@@ -52,7 +52,7 @@ function avgBaseFee(arr) {
 }
 
 // fetch latest prices, and set recommendations - v2
-const v2fetchPrices = async (_rec) => {
+const posV2FetchPrices = async (_rec) => {
     const blockNumber = await axios
         .post(config.posRPC, {
             jsonrpc: "2.0",
@@ -101,4 +101,4 @@ const v2fetchPrices = async (_rec) => {
         });
 };
 
-export default v2fetchPrices;
+export default posV2FetchPrices;
