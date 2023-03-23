@@ -57,6 +57,26 @@
                 {
                     "name": "PORT",
                     "value": "7000"
+                },
+                {
+                    "name": "BUFFERSIZE",
+                    "value": "1000"
+                },
+                {
+                    "name": "SAFELOW",
+                    "value": "0.25"
+                },
+                {
+                    "name": "STANDARD",
+                    "value": "2"
+                },
+                {
+                    "name": "FAST",
+                    "value": "5"
+                },
+                {
+                    "name": "FASTEST",
+                    "value": "10"
                 }
             ],
             "resourceRequirements": null,
@@ -72,6 +92,10 @@
                 {
                     "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/RPC",
                     "name": "POS_RPC"
+                },
+                {
+                    "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/ZKEVM_RPC",
+                    "name": "ZKEVM_RPC"
                 }
             ],
             "dockerSecurityOptions": null,
