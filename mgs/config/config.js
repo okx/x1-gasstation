@@ -9,6 +9,8 @@ config({ path: path.join(`${__dirname}/..`, ".env"), silent: true });
 export default {
     api: process.env.API,
     posRPC: process.env.POS_RPC,
+    zkevmRPC: process.env.ZKEVM_RPC,
+    bufferSize: process.env.BUFFERSIZE,
     v1: {
         safeParam: "SafeGasPrice",
         standardParam: "ProposeGasPrice",
@@ -20,5 +22,11 @@ export default {
         standard: parseInt(process.env.v2STANDARD),
         fast: parseInt(process.env.v2FAST),
         historyBlocks: parseInt(process.env.HISTORY_BLOCKS),
+    },
+    zkevmV1: {
+        safeLow: process.env.SAFELOW,
+        standard: process.env.STANDARD,
+        fast: process.env.FAST,
+        fastest: process.env.FASTEST,
     },
 };

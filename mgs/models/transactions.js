@@ -2,6 +2,8 @@
 // for making gas price recommendation
 module.exports = class Transactions {
     all = [];
+    latestBlockNumber = 0;
+    latestBlockTimestamp = 0;
 
     // specify transaction pool size, when overflowing
     // oldest transactions to be removed from it
@@ -54,12 +56,4 @@ module.exports = class Transactions {
     // minimum gas price at which all transactions were getting accepted by network
     getMinGasPriceWithAcceptanceRateX = (gasPrices, x) =>
         Math.min(...gasPrices.filter((v) => v[1] >= x).map((v) => v[0]));
-
-    // compute latest block number, upto which processing has been done
-    // this will be helpful to avoid re-consideration of same block again & again
-    get latestBlockNumber() {
-        return this.all.length == 0
-            ? 0
-            : Math.max(...this.all.map((v) => v.blockNumber));
-    }
 };

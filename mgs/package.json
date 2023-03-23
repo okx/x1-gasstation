@@ -19,7 +19,7 @@
     "dotenv": "^8.6.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "humanize-duration": "^3.25.1",
+    "humanize-duration": "^3.28.0",
     "morgan": "^1.10.0",
     "web3": "^1.2.11"
   }
