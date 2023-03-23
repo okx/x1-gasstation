@@ -4,8 +4,8 @@ Gas Price Recommender for Matic Network
 
 ## Deployment
 
-- Make sure you've `npm`, `nodejs` & `make` installed
-- Prepare `.env` file & paste following content into it. You may want to [check](#configuration)
+-   Make sure you've `npm`, `nodejs` & `make` installed
+-   Prepare `.env` file & paste following content into it. You may want to [check](#configuration)
 
 ```bash
 pushd mgs
@@ -19,20 +19,20 @@ SAFELOW=30
 STANDARD=60
 FAST=90
 FASTEST=100
-RPC=wss://<domain>
+POS_RPC=wss://<domain>
 BUFFERSIZE=500
 HOST=0.0.0.0
 PORT=7000
 ```
 
-- Install dependencies
+-   Install dependencies
 
 ```bash
 popd
 make install
 ```
 
-- Run service
+-   Run service
 
 ```bash
 make run
@@ -44,7 +44,7 @@ make run
 
 Assuming you've docker daemon up & running,
 
-- Build docker image
+-   Build docker image
 
 ```bash
 # all commands executed at root of project
@@ -52,48 +52,48 @@ Assuming you've docker daemon up & running,
 make build_docker
 ```
 
-- Create `.env` file at root of project
-- Run docker container
+-   Create `.env` file at root of project
+-   Run docker container
 
 ```bash
-# exposes port 7000 on HOST, 
+# exposes port 7000 on HOST,
 # while expecting PORT field
 # was untouched in .env
 
 make run_docker
 ```
 
-- Check docker container running
+-   Check docker container running
 
 ```bash
 docker ps
 ```
 
-- Check log
+-   Check log
 
 ```bash
 docker logs matic_gas_station -f # while following
 ```
 
-- Stop container
+-   Stop container
 
 ```bash
 docker stop matic_gas_station
 ```
 
-- Restart container
+-   Restart container
 
 ```bash
 docker restart matic_gas_station
 ```
 
-- Remove container
+-   Remove container
 
 ```bash
 docker rm matic_gas_station
 ```
 
-- Remove image
+-   Remove image
 
 ```bash
 docker rmi -f matic_gas_station
@@ -113,12 +113,12 @@ You'll receive
 
 ```json
 {
-  "safeLow": 2,
-  "standard": 3.020000001,
-  "fast": 5,
-  "fastest": 3870.208681652,
-  "blockTime": 2,
-  "blockNumber": 15854458
+    "safeLow": 2,
+    "standard": 3.020000001,
+    "fast": 5,
+    "fastest": 3870.208681652,
+    "blockTime": 2,
+    "blockNumber": 15854458
 }
 ```
 
@@ -126,26 +126,26 @@ You'll receive
 
 ### Configuration
 
-Field | Interpretation
---- | ---
-SafeLow | Minimum gas price at which **X** % of last **N** tx(s) got accepted
-Standard | -- do --
-Fast | -- do --
-Fastest | -- do --
-RPC | Bor node's websocket endpoint URL
-BufferSize | Last N tx(s) considered when recommending
-Host | Run HTTP server on interface address
-Port | Accept connections on port
+| Field      | Interpretation                                                      |
+| ---------- | ------------------------------------------------------------------- |
+| SafeLow    | Minimum gas price at which **X** % of last **N** tx(s) got accepted |
+| Standard   | -- do --                                                            |
+| Fast       | -- do --                                                            |
+| Fastest    | -- do --                                                            |
+| POS_RPC    | Bor node's websocket endpoint URL                                   |
+| BufferSize | Last N tx(s) considered when recommending                           |
+| Host       | Run HTTP server on interface address                                |
+| Port       | Accept connections on port                                          |
 
 ### Response
 
-Field | Interpretation
---- | ---
-SafeLow | Lowest possible recommended gas price
-Standard | Average gas price seen **( Recommended )**
-Fast | Tx should be included in ~30 sec
-Fastest | Targeted towards traders, super fast inclusion possibility
-BlockTime | Observed delay between two recently mined consequtive blocks
-BlockNumber | Latest considered block in recommendation
+| Field       | Interpretation                                               |
+| ----------- | ------------------------------------------------------------ |
+| SafeLow     | Lowest possible recommended gas price                        |
+| Standard    | Average gas price seen **( Recommended )**                   |
+| Fast        | Tx should be included in ~30 sec                             |
+| Fastest     | Targeted towards traders, super fast inclusion possibility   |
+| BlockTime   | Observed delay between two recently mined consequtive blocks |
+| BlockNumber | Latest considered block in recommendation                    |
 
 > Note: All gas prices in `Gwei`

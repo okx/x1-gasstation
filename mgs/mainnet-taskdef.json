@@ -1,7 +1,5 @@
 {
-    "requiresCompatibilities": [
-        "FARGATE"
-    ],
+    "requiresCompatibilities": ["FARGATE"],
     "inferenceAccelerators": [],
     "containerDefinitions": [
         {
@@ -37,30 +35,30 @@
             "cpu": 0,
             "environment": [
                 {
-                  "name": "HISTORY_BLOCKS",
-                  "value": "15"
+                    "name": "HISTORY_BLOCKS",
+                    "value": "15"
                 },
                 {
-                  "name": "v2FAST",
-                  "value": "50"
+                    "name": "v2FAST",
+                    "value": "50"
                 },
                 {
-                  "name": "v2STANDARD",
-                  "value": "25"
+                    "name": "v2STANDARD",
+                    "value": "25"
                 },
                 {
-                  "name": "v2SAFE",
-                  "value": "10"
+                    "name": "v2SAFE",
+                    "value": "10"
                 },
                 {
-                  "name": "HOST",
-                  "value": "0.0.0.0"
+                    "name": "HOST",
+                    "value": "0.0.0.0"
                 },
                 {
-                  "name": "PORT",
-                  "value": "7000"
+                    "name": "PORT",
+                    "value": "7000"
                 }
-              ],
+            ],
             "resourceRequirements": null,
             "ulimits": null,
             "dnsServers": null,
@@ -73,9 +71,9 @@
                 },
                 {
                     "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/RPC",
-                    "name": "RPC"
+                    "name": "POS_RPC"
                 }
-              ],
+            ],
             "dockerSecurityOptions": null,
             "memory": null,
             "memoryReservation": null,
