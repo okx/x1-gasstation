@@ -70,6 +70,9 @@ const zkevmV1FetchPrices = async (_rec, _transactions, _web3) => {
         (latestBlock.timestamp - _transactions.latestBlockTimestamp) /
         (latestBlock.number - _transactions.latestBlockNumber);
 
+    _transactions.latestBlockNumber = latestBlock.number;
+    _transactions.latestBlockTimestamp = latestBlock.timestamp;
+
     if (latestBlock.transactions.length == 0) {
         _transactions.latestBlockNumber = latestBlock.number;
         _transactions.latestBlockTimestamp = latestBlock.timestamp;
@@ -100,7 +103,7 @@ const zkevmV1FetchPrices = async (_rec, _transactions, _web3) => {
         )
     );
     _rec.blockNumber = _transactions.latestBlockNumber;
-    _rec.blockNumber - blockTime;
+    _rec.blockTime = blockTime;
 };
 
 export default zkevmV1FetchPrices;

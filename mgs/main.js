@@ -74,4 +74,4 @@ runZKEVMv1(zkevmV1recommendation, zkevmTransactions, zkevmWeb3)
         process.exit(1);
     });
 
-runServer(posV1recommendation, posV2recommendation);
+runServer(posV1recommendation, posV2recommendation, zkevmV1recommendation);
