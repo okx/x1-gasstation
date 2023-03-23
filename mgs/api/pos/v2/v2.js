@@ -53,52 +53,63 @@ function avgBaseFee(arr) {
 
 // fetch latest prices, and set recommendations - v2
 const posV2FetchPrices = async (_rec) => {
-    const blockNumber = await axios
-        .post(config.posRPC, {
-            jsonrpc: "2.0",
-            method: "eth_blockNumber",
-            params: [],
-            id: 1,
-        })
-        .then((response) => {
-            return web3.utils.hexToNumber(response.data.result);
-        });
-    const blockTime =
-        blockNumber > _rec.blockNumber
-            ? parseInt(6 / (blockNumber - _rec.blockNumber))
-            : _rec.blockTime;
+    try {
+        const blockNumber = await axios
+            .post(config.posRPC, {
+                jsonrpc: "2.0",
+                method: "eth_blockNumber",
+                params: [],
+                id: 1,
+            })
+            .then((response) => {
+                return web3.utils.hexToNumber(response.data.result);
+            });
+        const blockTime =
+            blockNumber > _rec.blockNumber
+                ? parseInt(6 / (blockNumber - _rec.blockNumber))
+                : _rec.blockTime;
 
-    await axios
-        .post(config.posRPC, {
-            jsonrpc: "2.0",
-            method: "eth_feeHistory",
-            params: [
-                config.v2.historyBlocks,
-                "pending",
-                [config.v2.safe, config.v2.standard, config.v2.fast],
-            ],
-            id: 1,
-        })
-        .then((response) => {
-            if (response.data.result) {
-                const blocks = formatFeeHistory(response.data.result, false);
-                const safeLow = avg(blocks.map((b) => b.priorityFeePerGas[0]));
-                const standard = avg(blocks.map((b) => b.priorityFeePerGas[1]));
-                const fast = avg(blocks.map((b) => b.priorityFeePerGas[2]));
-                const baseFeeEstimate = avgBaseFee(
-                    blocks.map((b) => b.baseFeePerGas)
-                );
+        await axios
+            .post(config.posRPC, {
+                jsonrpc: "2.0",
+                method: "eth_feeHistory",
+                params: [
+                    config.v2.historyBlocks,
+                    "pending",
+                    [config.v2.safe, config.v2.standard, config.v2.fast],
+                ],
+                id: 1,
+            })
+            .then((response) => {
+                if (response.data.result) {
+                    const blocks = formatFeeHistory(
+                        response.data.result,
+                        false
+                    );
+                    const safeLow = avg(
+                        blocks.map((b) => b.priorityFeePerGas[0])
+                    );
+                    const standard = avg(
+                        blocks.map((b) => b.priorityFeePerGas[1])
+                    );
+                    const fast = avg(blocks.map((b) => b.priorityFeePerGas[2]));
+                    const baseFeeEstimate = avgBaseFee(
+                        blocks.map((b) => b.baseFeePerGas)
+                    );
 
-                _rec.updateGasPrices(
-                    safeLow,
-                    standard,
-                    fast,
-                    baseFeeEstimate,
-                    blockNumber,
-                    blockTime
-                );
-            }
-        });
+                    _rec.updateGasPrices(
+                        safeLow,
+                        standard,
+                        fast,
+                        baseFeeEstimate,
+                        blockNumber,
+                        blockTime
+                    );
+                }
+            });
+    } catch (error) {
+        console.error("Error in PoS v2 rec computation\n", error);
+    }
 };
 
 export default posV2FetchPrices;

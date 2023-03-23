@@ -60,50 +60,54 @@ const processBlock = async (_web3, _transactions, _block) => {
 // after that it'll be computing gas price recommendation depending upon past data
 // and env variable values
 const zkevmV1FetchPrices = async (_rec, _transactions, _web3) => {
-    const latestBlock = await _web3.eth.getBlock("latest");
+    try {
+        const latestBlock = await _web3.eth.getBlock("latest");
 
-    if (!(_transactions.latestBlockNumber < latestBlock.number)) {
-        return;
-    }
+        if (!(_transactions.latestBlockNumber < latestBlock.number)) {
+            return;
+        }
 
-    const blockTime =
-        (latestBlock.timestamp - _transactions.latestBlockTimestamp) /
-        (latestBlock.number - _transactions.latestBlockNumber);
+        const blockTime =
+            (latestBlock.timestamp - _transactions.latestBlockTimestamp) /
+            (latestBlock.number - _transactions.latestBlockNumber);
 
-    _transactions.latestBlockNumber = latestBlock.number;
-    _transactions.latestBlockTimestamp = latestBlock.timestamp;
-
-    if (latestBlock.transactions.length == 0) {
         _transactions.latestBlockNumber = latestBlock.number;
         _transactions.latestBlockTimestamp = latestBlock.timestamp;
 
-        console.log(`❗️ Empty zkEVM Block : ${latestBlock.number}`);
-        return;
+        if (latestBlock.transactions.length == 0) {
+            _transactions.latestBlockNumber = latestBlock.number;
+            _transactions.latestBlockTimestamp = latestBlock.timestamp;
+
+            console.log(`❗️ Empty zkEVM Block : ${latestBlock.number}`);
+            return;
+        }
+
+        await processBlock(_web3, _transactions, latestBlock);
+        const cumsumGasPrices = _transactions.cumulativePercentageOfGasPrices();
+
+        _rec.updateGasPrices(
+            _transactions.getMinGasPriceWithAcceptanceRateX(
+                cumsumGasPrices,
+                config.zkevmV1.safeLow
+            ),
+            _transactions.getMinGasPriceWithAcceptanceRateX(
+                cumsumGasPrices,
+                config.zkevmV1.standard
+            ),
+            _transactions.getMinGasPriceWithAcceptanceRateX(
+                cumsumGasPrices,
+                config.zkevmV1.fast
+            ),
+            _transactions.getMinGasPriceWithAcceptanceRateX(
+                cumsumGasPrices,
+                config.zkevmV1.fastest
+            )
+        );
+        _rec.blockNumber = _transactions.latestBlockNumber;
+        _rec.blockTime = blockTime;
+    } catch (error) {
+        console.error("Error in zkEVM computation\n", error);
     }
-
-    await processBlock(_web3, _transactions, latestBlock);
-    const cumsumGasPrices = _transactions.cumulativePercentageOfGasPrices();
-
-    _rec.updateGasPrices(
-        _transactions.getMinGasPriceWithAcceptanceRateX(
-            cumsumGasPrices,
-            config.zkevmV1.safeLow
-        ),
-        _transactions.getMinGasPriceWithAcceptanceRateX(
-            cumsumGasPrices,
-            config.zkevmV1.standard
-        ),
-        _transactions.getMinGasPriceWithAcceptanceRateX(
-            cumsumGasPrices,
-            config.zkevmV1.fast
-        ),
-        _transactions.getMinGasPriceWithAcceptanceRateX(
-            cumsumGasPrices,
-            config.zkevmV1.fastest
-        )
-    );
-    _rec.blockNumber = _transactions.latestBlockNumber;
-    _rec.blockTime = blockTime;
 };
 
 export default zkevmV1FetchPrices;
