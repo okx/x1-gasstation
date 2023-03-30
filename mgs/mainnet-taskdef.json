@@ -60,23 +60,23 @@
                 },
                 {
                     "name": "BUFFERSIZE",
-                    "value": "1000"
+                    "value": "500"
                 },
                 {
                     "name": "SAFELOW",
-                    "value": "0.25"
-                },
-                {
-                    "name": "STANDARD",
                     "value": "2"
                 },
                 {
-                    "name": "FAST",
+                    "name": "STANDARD",
                     "value": "5"
                 },
                 {
-                    "name": "FASTEST",
+                    "name": "FAST",
                     "value": "10"
+                },
+                {
+                    "name": "FASTEST",
+                    "value": "15"
                 }
             ],
             "resourceRequirements": null,
