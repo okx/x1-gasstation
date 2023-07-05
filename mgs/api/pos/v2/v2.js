@@ -1,16 +1,20 @@
-const axios = require("axios");
-const Web3 = require("web3");
 const config = require("../../../config/config").default;
 
-const web3 = new Web3();
+/**
+ * function to format fee history response
+ * 
+ * @param {*} result - the fee history response
+ * @param {*} includePending - boolean to include or exclude pending txns
+ * @returns - Formatted result
+ */
 
-// function to format fee history response
 function formatFeeHistory(result, includePending) {
     const initBlockNum = Number(result.oldestBlock);
     let blockNum = initBlockNum;
     let index = 0;
     const blocks = [];
-    while (blockNum < initBlockNum + config.v2.historyBlocks) {
+
+    while (blockNum < initBlockNum + result.reward.length) {
         blocks.push({
             number: blockNum,
             baseFeePerGas: Number(result.baseFeePerGas[index]),
@@ -33,7 +37,12 @@ function formatFeeHistory(result, includePending) {
     return blocks;
 }
 
-// Functions to calculate average fee estimations
+/**
+ * Functions to calculate average fee estimations
+ * 
+ * @param {*} arr - Array of gas fee
+ * @returns - Average of gas fee
+ */
 function avg(arr) {
     let invalidValues = 0;
     const sum = arr.reduce((a, v) => {
@@ -46,44 +55,43 @@ function avg(arr) {
     return average > 30 ? average : 30;
 }
 
+/**
+ * Functions to calculate average of base fee estimations
+ * 
+ * @param {*} arr - Array of base gas fee
+ * @returns - Average of base gas fee
+ */
 function avgBaseFee(arr) {
-    const change = ((arr[5] - arr[0]) * 10) / config.v2.historyBlocks;
-    return Math.round(arr[config.v2.historyBlocks - 1] + change) / 1e9;
+    const change = ((arr[5] - arr[0]) * 10) / arr.length;
+    return Math.round(arr[arr.length - 1] + change) / 1e9;
 }
 
-// fetch latest prices, and set recommendations - v2
-const posV2FetchPrices = async (_rec) => {
-    try {
-        const blockNumber = await axios
-            .post(config.posRPC, {
-                jsonrpc: "2.0",
-                method: "eth_blockNumber",
-                params: [],
-                id: 1,
-            })
-            .then((response) => {
-                return web3.utils.hexToNumber(response.data.result);
-            });
-        const blockTime =
-            blockNumber > _rec.blockNumber
-                ? parseInt(6 / (blockNumber - _rec.blockNumber))
-                : _rec.blockTime;
+/**
+ * fetch latest prices of v2, and set recommendations - v1 and v2
+ * 
+ * @param {*} _v1rec - v1 recommendation class
+ * @param {*} _v2rec - v2 recommendation class
+ * @param {*} _web3 - web3 instance
+ */
 
-        await axios
-            .post(config.posRPC, {
-                jsonrpc: "2.0",
-                method: "eth_feeHistory",
-                params: [
-                    config.v2.historyBlocks,
-                    "pending",
-                    [config.v2.safe, config.v2.standard, config.v2.fast],
-                ],
-                id: 1,
-            })
-            .then((response) => {
-                if (response.data.result) {
+const posV2FetchPrices = async (_v1rec, _v2rec, _web3) => {
+    try {
+        const latestBlock = await _web3.eth.getBlock('latest');
+        const blockNumber = latestBlock.number;
+
+        if(_v1rec.blockNumber < blockNumber) {
+            const blockTime = _v2rec.blockTimestamp ? 
+                (latestBlock.timestamp - _v2rec.blockTimestamp) /
+                (latestBlock.number - _v2rec.blockNumber) : latestBlock.timestamp;
+
+            _web3.eth.getFeeHistory(
+                config.v2.historyBlocks,
+                "pending",
+                [config.v2.safe, config.v2.standard, config.v2.fast]
+            ).then((response) => {
+                if (response) {
                     const blocks = formatFeeHistory(
-                        response.data.result,
+                        response,
                         false
                     );
                     const safeLow = avg(
@@ -97,18 +105,31 @@ const posV2FetchPrices = async (_rec) => {
                         blocks.map((b) => b.baseFeePerGas)
                     );
 
-                    _rec.updateGasPrices(
+                    _v2rec.updateGasPrices(
                         safeLow,
                         standard,
                         fast,
                         baseFeeEstimate,
                         blockNumber,
-                        blockTime
+                        blockTime,
+                        latestBlock.timestamp
+                    );
+
+                    const v2Result = _v2rec.servable();
+
+                    _v1rec.updateGasPrices(
+                        v2Result.safeLow.maxFee,
+                        v2Result.standard.maxFee,
+                        v2Result.fast.maxFee,
+                        blockNumber,
+                        blockTime,
+                        latestBlock.timestamp
                     );
                 }
             });
+        }
     } catch (error) {
-        console.error("Error in PoS v2 rec computation\n", error);
+        console.error("Error in PoS rec computation\n", error);
     }
 };
 

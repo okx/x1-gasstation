@@ -15,7 +15,7 @@ app.use(cors());
 
 const runServer = (_v1rec, _v2rec, _zkevmRec) => {
     app.get("/", (_, res) => {
-        res.status(200).json(_v1rec.servable()).end();
+        res.status(200).json(_v2rec.servable()).end();
     });
 
     app.get("/v1", (_, res) => {

@@ -11,22 +11,10 @@ export default {
     posRPC: process.env.POS_RPC,
     zkevmRPC: process.env.ZKEVM_RPC,
     bufferSize: process.env.BUFFERSIZE,
-    v1: {
-        safeParam: "SafeGasPrice",
-        standardParam: "ProposeGasPrice",
-        fastParam: "FastGasPrice",
-        blockNumberParam: "LastBlock",
-    },
     v2: {
         safe: parseInt(process.env.v2SAFE),
         standard: parseInt(process.env.v2STANDARD),
         fast: parseInt(process.env.v2FAST),
         historyBlocks: parseInt(process.env.HISTORY_BLOCKS),
-    },
-    zkevmV1: {
-        safeLow: process.env.SAFELOW,
-        standard: process.env.STANDARD,
-        fast: process.env.FAST,
-        fastest: process.env.FASTEST,
-    },
+    }
 };

@@ -1,14 +1,16 @@
 import Web3 from "web3";
-import posV1FetchPrices from "./api/pos/v1/v1";
 import posV2FetchPrices from "./api/pos/v2/v2";
 import zkevmV1FetchPrices from "./api/zkevm/v1";
 import config from "./config/config";
-const v1Recommendation = require("./models/recommendation");
+const v1Recommendation = require("./models/v1recommendation");
 const v2Recommendation = require("./models/v2recommendation");
-const Transactions = require("./models/transactions");
 const { runServer } = require("./api/serve");
 
-// obtaining connection to RPC endpoint
+/**
+ * obtaining connection to RPC endpoint
+ * @param {*} rpc - RPC url 
+ * @returns web3 instance
+ */
 const getWeb3 = (rpc) =>
     new Web3(
         rpc.startsWith("http")
@@ -22,25 +24,32 @@ const sleep = async (ms) =>
         setTimeout(res, ms);
     });
 
-// infinite loop, for keep fetching latest block data, for computing
-// gas price recommendation using past data available
-const runPoSv1 = async (_v1rec) => {
+/**
+ * infinite loop, for keep fetching latest block data, for computing
+ * gas price recommendation using past data available
+ * 
+ * @param {*} _v1rec - V1 recommendation class
+ * @param {*} _v2rec - v2 recommendation class
+ * @param {*} _web3 - web3 instance
+ */
+
+const runPoS = async (_v1rec, _v2rec, _web3) => {
     while (true) {
-        await posV1FetchPrices(_v1rec);
+        await posV2FetchPrices(_v1rec, _v2rec, _web3);
         await sleep(5000);
     }
 };
 
-const runPoSv2 = async (_v2rec) => {
+/**
+ * infinite loop, for keep fetching latest block data, for computing
+ * gas price recommendation using past data available
+ * 
+ * @param {*} _v1rec - V1 recommendation class
+ * @param {*} _web3 - web3 instance
+ */
+const runZKEVMv1 = async (_v1rec, _web3) => {
     while (true) {
-        await posV2FetchPrices(_v2rec);
-        await sleep(5000);
-    }
-};
-
-const runZKEVMv1 = async (_v1rec, _transactions, _web3) => {
-    while (true) {
-        await zkevmV1FetchPrices(_v1rec, _transactions, _web3);
+        await zkevmV1FetchPrices(_v1rec, _web3);
         await sleep(10000);
     }
 };
@@ -48,26 +57,19 @@ const runZKEVMv1 = async (_v1rec, _transactions, _web3) => {
 const posV1recommendation = new v1Recommendation();
 const posV2recommendation = new v2Recommendation();
 const zkevmV1recommendation = new v1Recommendation();
-const zkevmTransactions = new Transactions(config.bufferSize);
 const zkevmWeb3 = getWeb3(config.zkevmRPC);
+const posWeb3 = getWeb3(config.posRPC);
 
 console.log("🔥 Matic Gas Station running ...");
 
-runPoSv1(posV1recommendation)
+runPoS(posV1recommendation, posV2recommendation, posWeb3)
     .then((_) => {})
     .catch((e) => {
         console.error(e);
         process.exit(1);
     });
 
-runPoSv2(posV2recommendation)
-    .then((_) => {})
-    .catch((e) => {
-        console.error(e);
-        process.exit(1);
-    });
-
-runZKEVMv1(zkevmV1recommendation, zkevmTransactions, zkevmWeb3)
+runZKEVMv1(zkevmV1recommendation, zkevmWeb3)
     .then((_) => {})
     .catch((e) => {
         console.error(e);
