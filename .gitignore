@@ -1,2 +1,2 @@
-.env
-mgs/node_modules
+/src/.env
+node_modules
