@@ -8,6 +8,8 @@ import helmet from 'helmet';
 import healthCheckRoute from './routes/healthCheck.js';
 import posRoutes from './routes/pos.js';
 import zkevmRoute from './routes/zkevm.js';
+import { errorHandlerMiddleware } from './middleware/errorHandler.js';
+import { verifyUrl } from "./middleware/verifyUrl.js";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +32,7 @@ const port = process.env.PORT || 7000;
 
 app.use(cors());
 app.use(helmet());
+app.use(verifyUrl);
 
 app.use('/health-check', healthCheckRoute);
 app.use('/pos', posRoutes);
@@ -41,16 +44,7 @@ app.use((req, res, next) => {
     next(error);
 });
 
-app.use((error, req, res, next) => {
-    res.status(error.status || 500);
-    Logger.error(error.message)
-    res.json({
-        error: {
-            message: error.message,
-        },
-    });
-});
-
+app.use(errorHandlerMiddleware);
 
 const startApi = () => {
     app.listen(port, () => {

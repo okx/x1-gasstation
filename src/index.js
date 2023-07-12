@@ -12,8 +12,10 @@ const posV1recommendation = new v1Recommendation();
 const posV2recommendation = new v2Recommendation();
 const zkevmV1recommendation = new v1Recommendation();
 
-const zkevmWeb3 = getWeb3(config.zkevmRPC);
-const posWeb3 = getWeb3(config.posRPC);
+const zkevmWeb3 = await getWeb3(config.zkevmRPC);
+const posWeb3 = await getWeb3(config.posRPC);
+
+// posWeb3.currentProvider.on('error', (err) => console.log(err))
 
 /**
  * infinite loop, for keep fetching latest block data, for computing
