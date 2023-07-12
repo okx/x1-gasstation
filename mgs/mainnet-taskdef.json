@@ -10,7 +10,7 @@
                 "options": {
                     "Name": "datadog",
                     "Host": "http-intake.logs.datadoghq.com",
-                    "dd_service": "gasstaion-mainnet",
+                    "dd_service": "gasstaion-api-mainnet",
                     "dd_source": "nodejs",
                     "TLS": "on",
                     "provider": "ecs"
@@ -18,7 +18,7 @@
                 "secretOptions": [
                     {
                         "name": "apiKey",
-                        "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/DATADOG_APIKEY"
+                        "valueFrom": "arn:aws:ssm:eu-west-1:042947190491:parameter/gasstation-api/DATADOG_APIKEY"
                     }
                 ]
             },
@@ -86,15 +86,15 @@
             "workingDirectory": null,
             "secrets": [
                 {
-                    "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/API",
+                    "valueFrom": "arn:aws:ssm:eu-west-1:042947190491:parameter/gasstation-api/API",
                     "name": "API"
                 },
                 {
-                    "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/RPC",
+                    "valueFrom": "arn:aws:ssm:eu-west-1:042947190491:parameter/gasstation-api/RPC",
                     "name": "POS_RPC"
                 },
                 {
-                    "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation/ZKEVM_RPC",
+                    "valueFrom": "arn:aws:ssm:eu-west-1:042947190491:parameter/gasstation-api/ZKEVM_RPC",
                     "name": "ZKEVM_RPC"
                 }
             ],
@@ -120,7 +120,7 @@
             "dockerLabels": null,
             "systemControls": null,
             "privileged": null,
-            "name": "gasstation",
+            "name": "gasstation-api",
             "repositoryCredentials": {
                 "credentialsParameter": ""
             }
@@ -160,16 +160,16 @@
     "networkMode": "awsvpc",
     "memory": "4096",
     "cpu": "2048",
-    "executionRoleArn": "arn:aws:iam::042947190491:role/gasstation-TaskRole",
-    "family": "gasstation-taskdefinition",
-    "taskRoleArn": "arn:aws:iam::042947190491:role/gasstation-TaskRole",
+    "executionRoleArn": "arn:aws:iam::042947190491:role/gasstation-api-TaskRole",
+    "family": "gasstation-api-taskdefinition",
+    "taskRoleArn": "arn:aws:iam::042947190491:role/gasstation-api-TaskRole",
     "runtimePlatform": {
         "operatingSystemFamily": "LINUX"
     },
     "tags": [
         {
             "key": "Role",
-            "value": "backend-application"
+            "value": "backend-api"
         },
         {
             "key": "ParentService",
@@ -181,7 +181,7 @@
         },
         {
             "key": "Service",
-            "value": "gasstation.polygon.technology"
+            "value": "gasstation-api.polygon.technology"
         },
         {
             "key": "Host",
@@ -189,15 +189,15 @@
         },
         {
             "key": "IAC",
-            "value": "terraform-workspace-aws-prod-applications-us-east-2-apps-gasstation-polygon-technology"
+            "value": "terraform-workspace-aws-prod-applications-eu-west-1-apps-gasstation-polygon-technology"
         },
         {
             "key": "Team",
-            "value": "product-apps"
+            "value": "dev-studio-engineering"
         },
         {
             "key": "Name",
-            "value": "gasstation-taskdefinition"
+            "value": "gasstation-api-taskdefinition"
         }
     ]
 }
