@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 env:
   AWS_REGION: eu-west-1
-  ECR_REPOSITORY: gasstation-ecr
+  ECR_REPOSITORY: gasstation-api-ecr
   ECS_SERVICE: gasstation-api-ecs-service
   ECS_CLUSTER: backend-apis-ecs-cluster 
   ECS_TASK_DEFINITION: mgs/mainnet-taskdef.json
