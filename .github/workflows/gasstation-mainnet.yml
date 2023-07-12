@@ -6,12 +6,12 @@ on:
       - 'mgs/**'
   workflow_dispatch:
 env:
-  AWS_REGION: us-east-2
+  AWS_REGION: eu-west-1
   ECR_REPOSITORY: gasstation-ecr
-  ECS_SERVICE: gasstation-ecs-service
-  ECS_CLUSTER: gasstation-ecs-cluster 
+  ECS_SERVICE: gasstation-api-ecs-service
+  ECS_CLUSTER: backend-apis-ecs-cluster 
   ECS_TASK_DEFINITION: mgs/mainnet-taskdef.json
-  CONTAINER_NAME: gasstation
+  CONTAINER_NAME: gasstation-api
 
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: arn:aws:iam::042947190491:role/gasstation-GithubActionsRole
+          role-to-assume: arn:aws:iam::042947190491:role/gasstation-api-GithubActionsRole
           role-session-name: GasstationGithubActionsSession
       - name: Login to Amazon ECR
         id: login-ecr
