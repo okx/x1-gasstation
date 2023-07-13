@@ -9,7 +9,7 @@ module.exports = class v2Recommendation {
   blockNumber = NaN
 
   toNineDecimal(x) {
-    return Number.isInteger(x) ? x : Number(x).toFixed(9);
+    return Number(Number.isInteger(x) ? x : Number(x).toFixed(9));
   }
   // updates gas price recommendation with latest values
   updateGasPrices(safeLow, standard, fast, baseFee, blockNumber, blockTime) {
