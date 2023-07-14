@@ -1,4 +1,4 @@
-import { handleResponse, returnError } from "../helpers/responseHandler.js";
+import { handleResponse, handleError } from "../helpers/responseHandler.js";
 import { getV1Recommendation, getV2Recommendation } from "../services/pos.js";
 
 export const getPosV1Recommendation = async(_, res, next) => {
@@ -8,7 +8,7 @@ export const getPosV1Recommendation = async(_, res, next) => {
             data: getV1Recommendation()
         })
     } catch(e) {
-        returnError(error, next);
+        handleError(e, next);
     }
 }
 
@@ -19,6 +19,6 @@ export const getPosV2Recommendation = async(_, res, next) => {
             data: getV2Recommendation()
         })
     } catch(e) {
-        returnError(error, next);
+        handleError(e, next);
     }
 }

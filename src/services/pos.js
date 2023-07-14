@@ -77,7 +77,7 @@ function avgBaseFee(arr) {
  * @param {*} _web3 - web3 instance
  */
 
-const posV2FetchPrices = async (_v1rec, _v2rec, _web3) => {
+const posV2FetchPrices = async(_v1rec, _v2rec, _web3) => {
     try {
         Logger.debug({
             location: 'posV2FetchPrices',
@@ -140,9 +140,9 @@ const posV2FetchPrices = async (_v1rec, _v2rec, _web3) => {
                 const v2Result = _v2rec.servable();
 
                 _v1rec.updateGasPrices(
-                    Number(v2Result.safeLow.maxFee),
-                    Number(v2Result.standard.maxFee),
-                    Number(v2Result.fast.maxFee),
+                    v2Result.safeLow.maxFee,
+                    v2Result.standard.maxFee,
+                    v2Result.fast.maxFee,
                     blockNumber,
                     blockTime,
                     timestamp

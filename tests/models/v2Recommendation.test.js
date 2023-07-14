@@ -35,4 +35,4 @@ describe('V1 Recommendation', () => {
             }
         );
     })
-})
+});

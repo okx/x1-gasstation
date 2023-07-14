@@ -1,4 +1,4 @@
-import { handleResponse, returnError } from "../helpers/responseHandler.js";
+import { handleResponse, handleError } from "../helpers/responseHandler.js";
 import { getZkevmRecommendation } from "../services/zkevm.js";
 
 export const getZkevmV1Recommendation = async(req, res, next) => {
@@ -8,6 +8,6 @@ export const getZkevmV1Recommendation = async(req, res, next) => {
             data: getZkevmRecommendation()
         })
     } catch(e) {
-        returnError(error, next);
+        handleError(e, next)
     }
 }

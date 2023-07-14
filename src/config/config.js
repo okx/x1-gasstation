@@ -16,9 +16,9 @@ export default {
     posRPC: process.env.POS_RPC,
     zkevmRPC: process.env.ZKEVM_RPC,
     v2: {
-        safe: parseInt(process.env.v2SAFE),
-        standard: parseInt(process.env.v2STANDARD),
-        fast: parseInt(process.env.v2FAST),
+        safe: parseInt(process.env.SAFE),
+        standard: parseInt(process.env.STANDARD),
+        fast: parseInt(process.env.FAST),
         historyBlocks: parseInt(process.env.HISTORY_BLOCKS),
     }
 };

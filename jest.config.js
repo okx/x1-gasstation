@@ -5,4 +5,4 @@ const jestConfig = {
     clearMocks: true
 }
 
-export default jestConfig
+export default jestConfig;

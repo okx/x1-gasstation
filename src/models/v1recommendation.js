@@ -3,12 +3,16 @@
  * along with blocktime & block number when recommendation was made
  */
 export default class v1Recommendation  {
-    safeLow = NaN
-    standard = NaN
-    fast = NaN
-    blockTime = 0
-    blockNumber = 0
-    blockTimestamp = 0
+
+
+    constructor() {
+        this.safeLow = NaN
+        this.standard = NaN
+        this.fast = NaN
+        this.blockTime = 0
+        this.blockNumber = 0
+        this.blockTimestamp = 0
+    }
 
     /**
      * updates gas price recommendation with latest values

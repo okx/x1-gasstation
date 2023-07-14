@@ -8,7 +8,7 @@ let zkevmRecommendation;
  * @param {*} _web3 - web3 instace
  * @returns 
  */
- const zkevmV1FetchPrices = async (_rec, _web3) => {
+ const zkevmV1FetchPrices = async(_rec, _web3) => {
     try {
         zkevmRecommendation = _rec;
         const latestBlock = await _web3.eth.getBlock("latest");

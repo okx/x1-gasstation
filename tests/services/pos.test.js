@@ -97,6 +97,4 @@ describe('PoS service', () => {
 
         expect(getV2Recommendation()).toEqual('test');
     })
-
-
-})
+});

@@ -12,9 +12,6 @@ const posV1recommendation = new v1Recommendation();
 const posV2recommendation = new v2Recommendation();
 const zkevmV1recommendation = new v1Recommendation();
 
-const zkevmWeb3 = await getWeb3(config.zkevmRPC);
-const posWeb3 = await getWeb3(config.posRPC);
-
 // posWeb3.currentProvider.on('error', (err) => console.log(err))
 
 /**
@@ -26,7 +23,7 @@ const posWeb3 = await getWeb3(config.posRPC);
  * @param {*} _web3 - web3 instance
  */
 
-const runPoS = async (_v1rec, _v2rec, _web3) => {
+const runPoS = async(_v1rec, _v2rec, _web3) => {
     Logger.info('Started PoS service...');
 
     while (true) {
@@ -42,7 +39,7 @@ const runPoS = async (_v1rec, _v2rec, _web3) => {
  * @param {*} _v1rec - V1 recommendation class
  * @param {*} _web3 - web3 instance
  */
-const runZKEVMv1 = async (_v1rec, _web3) => {
+const runZKEVMv1 = async(_v1rec, _web3) => {
     Logger.info('Started Zkevm service...');
 
     while (true) {
@@ -58,6 +55,7 @@ Logger.info('Matic Gas station is running....')
  * Function to start the PoS service
  */
 const startPosService = async() => {
+    const posWeb3 = await getWeb3(config.posRPC);
     runPoS(posV1recommendation, posV2recommendation, posWeb3)
     .then((_) => {})
     .catch((e) => {
@@ -72,6 +70,7 @@ const startPosService = async() => {
  * Function to start the Zkevm service
  */
 const startZkevmService = async() => {
+    const zkevmWeb3 = await getWeb3(config.zkevmRPC);
     runZKEVMv1(zkevmV1recommendation, zkevmWeb3)
     .then((_) => {})
     .catch((e) => {
@@ -90,5 +89,3 @@ startZkevmService();
 
 //Start Api
 startApi();
-
-

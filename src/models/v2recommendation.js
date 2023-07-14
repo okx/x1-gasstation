@@ -1,15 +1,20 @@
+
+
 /**
  * Class for storing, publishing gas price recommendations
  * along with blocktime & block number when recommendation was made
  */
 export default class v2Recommendation {
-    safeLow = {}
-    standard = {}
-    fast = {}
-    estimatedBaseFee = NaN
-    blockTime = 0
-    blockNumber = 0
-    blockTimestamp = 0
+
+    constructor() {
+        this.safeLow = {}
+        this.standard = {}
+        this.fast = {}
+        this.estimatedBaseFee = NaN
+        this.blockTime = 0
+        this.blockNumber = 0
+        this.blockTimestamp = 0
+    }
 
     /**
      * Convert to fixed decimals
@@ -17,7 +22,7 @@ export default class v2Recommendation {
      * @returns - Fixed decimal to 9 digits
      */
     toNineDecimal(x) {
-        return Number.isInteger(x) ? x : Number(x).toFixed(9);
+        return Number(Number.isInteger(x) ? x : Number(x).toFixed(9));
     }
     /**
      * Update gas prices

@@ -28,4 +28,4 @@ describe('V1 Recommendation', () => {
             { safeLow: 1, standard: 2, fast: 3, blockTime: 5, blockNumber: 4 }
         );
     })
-})
+});

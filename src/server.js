@@ -27,7 +27,6 @@ Logger.create({
 });
 
 const app = express();
-const host = process.env.HOST || "0.0.0.0";
 const port = process.env.PORT || 7000;
 
 app.use(cors());
@@ -48,7 +47,7 @@ app.use(errorHandlerMiddleware);
 
 const startApi = () => {
     app.listen(port, () => {
-        Logger.info(`🔥 Listening at http://${host}:${port}`);
+        Logger.info(`🔥 Listening at http://localhost:${port}`);
     });
 };
 
