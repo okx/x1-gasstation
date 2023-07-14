@@ -37,10 +37,10 @@ describe('PoS service', () => {
         }
 
         v2Mock.servable.mockReturnValueOnce({
-            safeLow: { maxPriorityFee: 30, maxFee: '130.910560974' },
-            standard: { maxPriorityFee: 30, maxFee: '130.910560974' },
-            fast: { maxPriorityFee: 30, maxFee: '130.910560974' },
-            estimatedBaseFee: '100.910560974',
+            safeLow: { maxPriorityFee: 30, maxFee: 130.910560974 },
+            standard: { maxPriorityFee: 30, maxFee: 130.910560974 },
+            fast: { maxPriorityFee: 30, maxFee: 130.910560974 },
+            estimatedBaseFee: 100.910560974,
             blockTime: 1689083720950,
             blockNumber: 44952697
         })   
