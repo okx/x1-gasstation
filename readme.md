@@ -15,6 +15,17 @@ $ npm install
 touch .env
 ```
 
+Example
+```
+POS_RPC=<pos rpc url>
+ZKEVM_RPC=<zkevm rpc url>
+PORT=7000
+SAFE=5
+STANDARD=15
+FAST=30
+HISTORY_BLOCKS=15
+```
+
 -   Run service
 
 ```bash
@@ -168,9 +179,9 @@ curl -s localhost:7000/zkevm
 
 | Field           | Interpretation                                                      |
 | --------------- | ------------------------------------------------------------------- |
-| SafeLow         | Minimum gas price at which **X** % of last **N** tx(s) got accepted |
-| Standard        | -- do --                                                            |
-| Fast            | -- do --                                                            |      
+| Safe            | Minimum gas price at which **X** % of last **N** tx(s) got accepted |
+| Standard        | Average gas price at which **X** % of last **N** tx(s) got accepted |
+| Fast            | Highest gas price at which **X** % of last **N** tx(s) got accepted |
 | POS_RPC         | PoS node's endpoint                                                 |
 | ZKEVM_PRC       | Zkevm node's endpoint                                               |
 | Port            | Accept connections on port                                          |
