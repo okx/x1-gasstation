@@ -6,9 +6,9 @@ let zkevmRecommendation;
  * and update the gas price
  * @param {*} _rec - Recommendation class
  * @param {*} _web3 - web3 instace
- * @returns 
+ * @returns
  */
- const zkevmV1FetchPrices = async(_rec, _web3) => {
+const zkevmV1FetchPrices = async (_rec, _web3) => {
     try {
         zkevmRecommendation = _rec;
         const latestBlock = await _web3.eth.getBlock("latest");
@@ -17,11 +17,11 @@ let zkevmRecommendation;
         let blockNumber = latestBlock.number;
         let timestamp = latestBlock.timestamp;
 
-        if(typeof blockNumber === 'bigint') {
+        if (typeof blockNumber === "bigint") {
             blockNumber = parseInt(blockNumber);
         }
 
-        if(typeof timestamp === 'bigint') {
+        if (typeof timestamp === "bigint") {
             timestamp = parseInt(timestamp);
         }
 
@@ -29,30 +29,23 @@ let zkevmRecommendation;
             return;
         }
 
-        const blockTime = _rec.blockTimestamp ?
-            (timestamp - _rec.blockTimestamp) /
-            (blockNumber - _rec.blockNumber) : timestamp
+        const blockTime = _rec.blockTimestamp
+            ? (timestamp - _rec.blockTimestamp) / (blockNumber - _rec.blockNumber)
+            : timestamp;
 
-        const gasPriceInGwei = Number(_web3.utils.fromWei(gasaPrice, 'gwei'));
+        const gasPriceInGwei = Number(_web3.utils.fromWei(gasaPrice, "gwei"));
 
-        _rec.updateGasPrices(
-            gasPriceInGwei,
-            gasPriceInGwei,
-            gasPriceInGwei,
-            blockNumber,
-            blockTime,
-            timestamp
-        );
+        _rec.updateGasPrices(gasPriceInGwei, gasPriceInGwei, gasPriceInGwei, blockNumber, blockTime, timestamp);
     } catch (error) {
         Logger.error({
-            location: 'zkevmV1FetchPrices',
-            error
+            location: "zkevmV1FetchPrices",
+            error,
         });
     }
 };
 
 export const getZkevmRecommendation = () => {
     return zkevmRecommendation.servable();
-}
+};
 
 export default zkevmV1FetchPrices;

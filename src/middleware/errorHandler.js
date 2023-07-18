@@ -1,4 +1,4 @@
-import constants from '../config/constants.js';
+import constants from "../config/constants.js";
 
 export const errorHandlerMiddleware = (err, req, res, next) => {
     const customError = {
@@ -9,14 +9,12 @@ export const errorHandlerMiddleware = (err, req, res, next) => {
         errorReason: err.errorReason || null,
     };
 
-    return res
-        .status(customError.statusCode)
-        .json({
-            success: false,
-            data: {
-                message: customError.message,
-                messageDetails: customError.messageDetails,
-                errorReason: customError.errorReason,
-            },
-        });
+    return res.status(customError.statusCode).json({
+        success: false,
+        data: {
+            message: customError.message,
+            messageDetails: customError.messageDetails,
+            errorReason: customError.errorReason,
+        },
+    });
 };
