@@ -16,6 +16,7 @@ touch .env
 ```
 
 Example
+
 ```
 POS_RPC=<pos rpc url>
 ZKEVM_RPC=<zkevm rpc url>
@@ -32,11 +33,11 @@ HISTORY_BLOCKS=15
 npm start
 ```
 
--  Run tests
+-   Run tests
+
 ```bash
 npm tests
 ```
-
 
 ---
 
@@ -52,7 +53,7 @@ Assuming you've docker set up & running,
 docker build . -t mgs
 ```
 
-- Run docker image at port 7000 and name the container
+-   Run docker image at port 7000 and name the container
 
 ```bash
 docker run -p 7000 -d --name matic_gas_station mgs
@@ -93,17 +94,21 @@ docker rm matic_gas_station
 ```bash
 docker rmi -f matic_gas_station
 ```
+
 ---
 
 ## Usage
 
 ### PoS v1
+
 **Request**
+
 ```bash
 curl -s localhost:7000/pos/v1
 ```
 
 **Response**
+
 ```js
 {
 	"success": true,
@@ -120,14 +125,17 @@ curl -s localhost:7000/pos/v1
 ### PoS v2
 
 **Request**
+
 ```bash
-curl -s localhost:7000/pos 
+curl -s localhost:7000/pos
 
 (or)
 
 curl -s localhost:7000/pos/v2
 ```
+
 **Response**
+
 ```js
 {
 	"success": true,
@@ -152,12 +160,15 @@ curl -s localhost:7000/pos/v2
 ```
 
 ### Zkevm
+
 **Request**
+
 ```bash
 curl -s localhost:7000/zkevm
 ```
 
 **Response**
+
 ```js
 {
 	"success": true,
@@ -170,8 +181,6 @@ curl -s localhost:7000/zkevm
 	}
 }
 ```
-
-
 
 ## Interpretation
 

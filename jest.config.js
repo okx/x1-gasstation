@@ -1,8 +1,8 @@
 const jestConfig = {
-    "transform": {
-        "^.+\\.(j|t)s?$": "babel-jest"
+    transform: {
+        "^.+\\.(j|t)s?$": "babel-jest",
     },
-    clearMocks: true
-}
+    clearMocks: true,
+};
 
 export default jestConfig;

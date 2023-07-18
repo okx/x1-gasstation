@@ -8,7 +8,7 @@
         "start": "node src/index.js",
         "tests": "jest",
         "lint": "eslint src/*.js src/**/*.js",
-        "lint:fix": "eslint --fix src/**/*.js"
+        "lint:fix": "eslint --fix src/* src/**/*.js"
     },
     "repository": {
         "type": "git",
