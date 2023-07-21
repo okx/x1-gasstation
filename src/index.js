@@ -21,7 +21,7 @@ const zkevmV1recommendation = new v1Recommendation();
  * @param {*} _v1rec - V1 recommendation class
  * @param {*} _v2rec - v2 recommendation class
  * @param {*} _web3 - web3 instance
- */ s;
+ */
 
 const runPoS = async (_v1rec, _v2rec, _web3) => {
     Logger.info("Started PoS service...");
