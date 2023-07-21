@@ -1,7 +1,4 @@
 import winston from "winston";
-import SentryTransport from "winston-transport-sentry-node";
-
-const Sentry = SentryTransport.default;
 
 let logger = null;
 
@@ -24,36 +21,12 @@ export default class Logger {
                     {
                         format: winston.format.combine(
                             winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
-                            winston.format.colorize({
-                                all: true,
-                                colors: {
-                                    error: "red",
-                                    warn: "yellow",
-                                    info: "green",
-                                    debug: "white",
-                                },
-                            }),
+                            winston.format.colorize(),
                             winston.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`),
                         ),
                         transports: [
                             new winston.transports.Console({
                                 level: config.console?.level || "info",
-                            }),
-                            new Sentry({
-                                sentry: {
-                                    dsn: config.sentry?.dsn,
-                                    environment: config.sentry?.environment || "development",
-                                },
-                                level: config.sentry?.level || "error",
-                            }),
-                            new winston.transports.Http({
-                                host: "http-intake.logs.datadoghq.com",
-                                path:
-                                    "/api/v2/logs?dd-api-key=" +
-                                    config.datadog?.api_key +
-                                    "&ddsource=nodejs&service=" +
-                                    config.datadog?.service_name,
-                                ssl: true,
                             }),
                         ],
                     },
