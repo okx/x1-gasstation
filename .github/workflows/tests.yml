@@ -1,0 +1,25 @@
+name: Tests
+run-name: ${{ github.actor }} just pushed to Polygon Gas staion
+
+on: 
+  push:
+    branches:
+      - '**'
+
+jobs:
+  Tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: CHECK-OUT GIT REPOSITORY
+        uses: actions/checkout@v3
+      - name: Use Node.js (v18)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.11.0'
+      - name: Check ubuntu version
+        run: lsb_release -a
+      - name: Install dependencies
+        run: npm i
+      - name: Run Unit Tests
+        run: npm run tests

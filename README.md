@@ -1,66 +1,62 @@
 # maticgasstation
 
-Gas Price Recommender for Matic Network
+MaticGasStation Network is a REST API service that provides current gas price recommendations for Polygon PoS and Zkevm transactions. This service offers developers a convenient way to retrieve real-time gas prices and make informed decisions about transaction fees on the Polygon PoS and Zkevm network.
 
-## Deployment
-
--   Make sure you've `npm`, `nodejs` & `make` installed
--   Prepare `.env` file & paste following content into it. You may want to [check](#configuration)
+## Installation
 
 ```bash
-pushd mgs
+$ git clone https://github.com/maticnetwork/
+$ npm install
+```
+
+-   Prepare `.env` file & paste following content in .env.sample file into it. You may want to check [configuratoin](#configuration).
+
+```bash
 touch .env
 ```
 
-> Note: For `RPC` field, use websocket endpoint of Bor Node
+Example
 
 ```
-SAFELOW=30
-STANDARD=60
-FAST=90
-FASTEST=100
-POS_RPC=wss://<domain>
-BUFFERSIZE=500
-HOST=0.0.0.0
+POS_RPC=<pos rpc url>
+ZKEVM_RPC=<zkevm rpc url>
 PORT=7000
-```
-
--   Install dependencies
-
-```bash
-popd
-make install
+SAFE=5
+STANDARD=15
+FAST=30
+HISTORY_BLOCKS=15
 ```
 
 -   Run service
 
 ```bash
-make run
+npm start
+```
+
+-   Run tests
+
+```bash
+npm tests
 ```
 
 ---
 
 ### Dockerised Setup
 
-Assuming you've docker daemon up & running,
+Assuming you've docker set up & running,
 
--   Build docker image
+-   Build docker image with tag mgs
 
 ```bash
 # all commands executed at root of project
 
-make build_docker
+docker build . -t mgs
 ```
 
--   Create `.env` file at root of project
--   Run docker container
+-   Run docker image at port 7000 and name the container
 
 ```bash
-# exposes port 7000 on HOST,
-# while expecting PORT field
-# was untouched in .env
-
-make run_docker
+docker run -p 7000 -d --name matic_gas_station mgs
 ```
 
 -   Check docker container running
@@ -72,7 +68,7 @@ docker ps
 -   Check log
 
 ```bash
-docker logs matic_gas_station -f # while following
+docker logs -f matic_gas_station
 ```
 
 -   Stop container
@@ -99,26 +95,90 @@ docker rm matic_gas_station
 docker rmi -f matic_gas_station
 ```
 
-> Note: Log rotation is enabled, max log file size 8MB, max log file count 4. For changing this see `Makefile`.
+---
 
 ## Usage
 
-Send HTTP GET request
+### PoS v1
+
+**Request**
 
 ```bash
-curl -s localhost:7000 | jq
+curl -s localhost:7000/pos/v1
 ```
 
-You'll receive
+**Response**
 
-```json
+```js
 {
-    "safeLow": 2,
-    "standard": 3.020000001,
-    "fast": 5,
-    "fastest": 3870.208681652,
-    "blockTime": 2,
-    "blockNumber": 15854458
+	"success": true,
+	"data": {
+		"safeLow": 129.47556613,
+		"standard": 129.47556613,
+		"fast": 129.47556613,
+		"blockTime": 2,
+		"blockNumber": 45068237
+	}
+}
+```
+
+### PoS v2
+
+**Request**
+
+```bash
+curl -s localhost:7000/pos
+
+(or)
+
+curl -s localhost:7000/pos/v2
+```
+
+**Response**
+
+```js
+{
+	"success": true,
+	"data": {
+		"safeLow": {
+			"maxPriorityFee": 30,
+			"maxFee": 189.831563019
+		},
+		"standard": {
+			"maxPriorityFee": 30,
+			"maxFee": 189.831563019
+		},
+		"fast": {
+			"maxPriorityFee": 31.931367927,
+			"maxFee": 191.762930946
+		},
+		"estimatedBaseFee": 159.831563019,
+		"blockTime": 2,
+		"blockNumber": 45068158
+	}
+}
+```
+
+### Zkevm
+
+**Request**
+
+```bash
+curl -s localhost:7000/zkevm
+```
+
+**Response**
+
+```js
+{
+	"success": true,
+	"data": {
+		"safeLow": 1.04,
+		"standard": 1.04,
+		"fast": 1.04,
+		"blockTime": 1.5,
+		"blockNumber": 2526102
+	}
 }
 ```
 
@@ -126,16 +186,15 @@ You'll receive
 
 ### Configuration
 
-| Field      | Interpretation                                                      |
-| ---------- | ------------------------------------------------------------------- |
-| SafeLow    | Minimum gas price at which **X** % of last **N** tx(s) got accepted |
-| Standard   | -- do --                                                            |
-| Fast       | -- do --                                                            |
-| Fastest    | -- do --                                                            |
-| POS_RPC    | Bor node's websocket endpoint URL                                   |
-| BufferSize | Last N tx(s) considered when recommending                           |
-| Host       | Run HTTP server on interface address                                |
-| Port       | Accept connections on port                                          |
+| Field           | Interpretation                                                      |
+| --------------- | ------------------------------------------------------------------- |
+| Safe            | Minimum gas price at which **X** % of last **N** tx(s) got accepted |
+| Standard        | Average gas price at which **X** % of last **N** tx(s) got accepted |
+| Fast            | Highest gas price at which **X** % of last **N** tx(s) got accepted |
+| POS_RPC         | PoS node's endpoint                                                 |
+| ZKEVM_PRC       | Zkevm node's endpoint                                               |
+| Port            | Accept connections on port                                          |
+| HistoryOfBlocks | The last N history of blocks                                        |
 
 ### Response
 
@@ -144,7 +203,6 @@ You'll receive
 | SafeLow     | Lowest possible recommended gas price                        |
 | Standard    | Average gas price seen **( Recommended )**                   |
 | Fast        | Tx should be included in ~30 sec                             |
-| Fastest     | Targeted towards traders, super fast inclusion possibility   |
 | BlockTime   | Observed delay between two recently mined consequtive blocks |
 | BlockNumber | Latest considered block in recommendation                    |
 
