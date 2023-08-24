@@ -14,8 +14,8 @@
         "type": "git",
         "url": "git+https://github.com/maticnetwork/maticgasstation.git"
     },
-    "author": "Krishna Kumar S (kkumars@polygon.technology)",
-    "license": "ISC",
+    "author": "py-zoid",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/maticnetwork/maticgasstation/issues"
     },
