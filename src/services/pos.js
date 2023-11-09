@@ -2,6 +2,8 @@ import Logger from "../helpers/logger.js";
 import config from "../config/config.js";
 
 let v1Recommendation, v2Recommendation;
+let v1AmoyRecommendation, v2AmoyRecommendation;
+
 /**
  * function to format fee history response
  *
@@ -74,15 +76,20 @@ function avgBaseFee(arr) {
  * @param {*} _web3 - web3 instance
  */
 
-const posV2FetchPrices = async (_v1rec, _v2rec, _web3) => {
+const posV2FetchPrices = async (_v1rec, _v2rec, _web3, network = 'mainnet') => {
     try {
         Logger.debug({
             location: "posV2FetchPrices",
             status: "Function call",
         });
 
-        v1Recommendation = _v1rec;
-        v2Recommendation = _v2rec;
+        if (network === 'amoy') {
+            v1AmoyRecommendation = _v1rec;
+            v2AmoyRecommendation = _v2rec;
+        } else {
+            v1Recommendation = _v1rec;
+            v2Recommendation = _v2rec;
+        }
 
         const latestBlock = await _web3.eth.getBlock("latest");
 
@@ -143,6 +150,14 @@ export const getV1Recommendation = () => {
 
 export const getV2Recommendation = () => {
     return v2Recommendation?.servable();
+};
+
+export const getAmoyV1Recommendation = () => {
+    return v1AmoyRecommendation?.servable();
+};
+
+export const getAmoyV2Recommendation = () => {
+    return v2AmoyRecommendation?.servable();
 };
 
 export default posV2FetchPrices;
