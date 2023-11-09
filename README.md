@@ -207,3 +207,23 @@ curl -s localhost:7000/zkevm
 | BlockNumber | Latest considered block in recommendation                    |
 
 > Note: All gas prices in `Gwei`
+
+## Support
+
+Our [Discord](https://discord.gg/0xPolygonDevs) is the best way to reach us ✨.
+
+## Contributing
+
+You are very welcome to contribute, please see contributing guidelines - [[Contribute](./CONTRIBUTING.md)].
+
+Thank you to all the people who already contributed to maticgasstation!
+
+<a href="https://github.com/maticnetwork/maticgasstation/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=maticnetwork/maticgasstation" />
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
+
+## License
+
+[MIT](./LICENSE)
