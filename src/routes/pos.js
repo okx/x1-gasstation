@@ -13,7 +13,7 @@ router.get("/v1", getPosV1Recommendation);
 //Get PoS v2 recommendation
 router.get("/v2", getPosV2Recommendation);
 
-if (config.NODE_ENV === 'prod-testnet' || 'staging-testnet') {
+if (config.NODE_ENV === ('prod-testnet' || 'staging-testnet')) {
     //Get PoS amoy recommendation
     router.get("/amoy/", getPosAmoyV2Recommendation);
 

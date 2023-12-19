@@ -13,6 +13,7 @@ const posV2recommendation = new v2Recommendation();
 const posV1Amoyrecommendation = new v1Recommendation();
 const posV2Amoyrecommendation = new v2Recommendation();
 const zkevmV1recommendation = new v1Recommendation();
+const zkevmV1Cardonarecommendation = new v1Recommendation();
 
 // posWeb3.currentProvider.on('error', (err) => console.log(err))
 
@@ -86,7 +87,7 @@ startPosService();
 //Start Zkevm service
 startZkevmService();
 
-if (config.NODE_ENV === 'prod-testnet' || 'staging-testnet') {
+if (config.NODE_ENV === ('prod-testnet' || 'staging-testnet')) {
     /**
      * infinite loop, for keep fetching latest block data, for computing
      * gas price recommendation using past data available
@@ -105,6 +106,22 @@ if (config.NODE_ENV === 'prod-testnet' || 'staging-testnet') {
     };
 
     /**
+     * infinite loop, for keep fetching latest block data, for computing
+     * gas price recommendation using past data available
+     *
+     * @param {*} _v1rec - V1 recommendation class
+     * @param {*} _web3 - web3 instance
+     */
+    const runZKEVMCardona = async (_v1rec, _web3) => {
+        Logger.info("Started Zkevm Cardona service...");
+
+        while (true) {
+            await zkevmV1FetchPrices(_v1rec, _web3, 'cardona');
+            await sleep(10000);
+        }
+    };
+
+    /**
      * Function to start the PoS service
      */
     const startPosAmoyService = async () => {
@@ -118,8 +135,25 @@ if (config.NODE_ENV === 'prod-testnet' || 'staging-testnet') {
             });
     };
 
-    //Start Pos service
+    /**
+     * Function to start the Zkevm service
+     */
+    const startZkevmCardonaService = async () => {
+        const zkevmWeb3 = await getWeb3(config.cardonaRPC);
+        runZKEVMCardona(zkevmV1Cardonarecommendation, zkevmWeb3)
+            .then((_) => { })
+            .catch((e) => {
+                Logger.error(e);
+                Logger.info("Restarting zkem cardona service....");
+                startZkevmCardonaService();
+            });
+    };
+
+    //Start Pos Amoy service
     startPosAmoyService();
+
+    //Start zkEVM Cardona service
+    startZkevmCardonaService();
 }
 
 //Start Api
