@@ -34,8 +34,9 @@ app.use(helmet());
 app.use(verifyUrl);
 
 app.use("/health-check", healthCheckRoute);
-app.use("/pos", posRoutes);
+app.use("/", posRoutes);
 app.use("/zkevm", zkevmRoute);
+app.use("/pos", posRoutes);
 
 app.use((req, res, next) => {
     const error = new Error("Not found");
