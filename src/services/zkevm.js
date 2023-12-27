@@ -1,6 +1,8 @@
 import Logger from "../helpers/logger.js";
 
 let zkevmRecommendation;
+let zkevmCardonaRecommendation;
+
 /**
  * Fetch latest block produced, if it's not already processed & non-empty
  * and update the gas price
@@ -8,9 +10,14 @@ let zkevmRecommendation;
  * @param {*} _web3 - web3 instace
  * @returns
  */
-const zkevmV1FetchPrices = async (_rec, _web3) => {
+const zkevmV1FetchPrices = async (_rec, _web3, network = 'mainnet') => {
     try {
-        zkevmRecommendation = _rec;
+        if (network === 'cardona') {
+            zkevmCardonaRecommendation = _rec;
+        } else {
+            zkevmRecommendation = _rec
+        }
+        
         const latestBlock = await _web3.eth.getBlock("latest");
         const gasaPrice = await _web3.eth.getGasPrice();
 
@@ -46,6 +53,10 @@ const zkevmV1FetchPrices = async (_rec, _web3) => {
 
 export const getZkevmRecommendation = () => {
     return zkevmRecommendation.servable();
+};
+
+export const getZkevmCardonaRecommendation = () => {
+    return zkevmCardonaRecommendation.servable();
 };
 
 export default zkevmV1FetchPrices;

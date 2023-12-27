@@ -13,11 +13,14 @@ config({ path: path.join(__dirname, "../../.env"), silent: true });
 // setting environment variables
 export default {
     posRPC: process.env.POS_RPC,
+    amoyRPC: process.env.AMOY_RPC,
     zkevmRPC: process.env.ZKEVM_RPC,
+    cardonaRPC: process.env.CARDONA_RPC,
     v2: {
         safe: parseInt(process.env.SAFE),
         standard: parseInt(process.env.STANDARD),
         fast: parseInt(process.env.FAST),
         historyBlocks: parseInt(process.env.HISTORY_BLOCKS),
     },
+    NODE_ENV: process.env.NODE_ENV || 'prod-mainnet'
 };

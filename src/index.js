@@ -10,7 +10,10 @@ import zkevmV1FetchPrices from "./services/zkevm.js";
 
 const posV1recommendation = new v1Recommendation();
 const posV2recommendation = new v2Recommendation();
+const posV1Amoyrecommendation = new v1Recommendation();
+const posV2Amoyrecommendation = new v2Recommendation();
 const zkevmV1recommendation = new v1Recommendation();
+const zkevmV1Cardonarecommendation = new v1Recommendation();
 
 // posWeb3.currentProvider.on('error', (err) => console.log(err))
 
@@ -56,7 +59,7 @@ Logger.info("Matic Gas station is running....");
 const startPosService = async () => {
     const posWeb3 = await getWeb3(config.posRPC);
     runPoS(posV1recommendation, posV2recommendation, posWeb3)
-        .then((_) => {})
+        .then((_) => { })
         .catch((e) => {
             Logger.error(e);
             Logger.info("Restarting PoS service...");
@@ -70,7 +73,7 @@ const startPosService = async () => {
 const startZkevmService = async () => {
     const zkevmWeb3 = await getWeb3(config.zkevmRPC);
     runZKEVMv1(zkevmV1recommendation, zkevmWeb3)
-        .then((_) => {})
+        .then((_) => { })
         .catch((e) => {
             Logger.error(e);
             Logger.info("Restarting zkem service....");
@@ -83,6 +86,75 @@ startPosService();
 
 //Start Zkevm service
 startZkevmService();
+
+if (config.NODE_ENV === ('prod-testnet' || 'staging-testnet')) {
+    /**
+     * infinite loop, for keep fetching latest block data, for computing
+     * gas price recommendation using past data available
+     *
+     * @param {*} _v1rec - V1 recommendation class
+     * @param {*} _v2rec - v2 recommendation class
+     * @param {*} _web3 - web3 instance
+     */
+    const runPoSAmoy = async (_v1rec, _v2rec, _web3) => {
+        Logger.info("Started PoS Amoy service...");
+
+        while (true) {
+            await posV2FetchPrices(_v1rec, _v2rec, _web3, 'amoy');
+            await sleep(5000);
+        }
+    };
+
+    /**
+     * infinite loop, for keep fetching latest block data, for computing
+     * gas price recommendation using past data available
+     *
+     * @param {*} _v1rec - V1 recommendation class
+     * @param {*} _web3 - web3 instance
+     */
+    const runZKEVMCardona = async (_v1rec, _web3) => {
+        Logger.info("Started Zkevm Cardona service...");
+
+        while (true) {
+            await zkevmV1FetchPrices(_v1rec, _web3, 'cardona');
+            await sleep(10000);
+        }
+    };
+
+    /**
+     * Function to start the PoS service
+     */
+    const startPosAmoyService = async () => {
+        const posWeb3 = await getWeb3(config.amoyRPC);
+        runPoSAmoy(posV1Amoyrecommendation, posV2Amoyrecommendation, posWeb3)
+            .then((_) => { })
+            .catch((e) => {
+                Logger.error(e);
+                Logger.info("Restarting PoS Amoy service...");
+                startPosService();
+            });
+    };
+
+    /**
+     * Function to start the Zkevm service
+     */
+    const startZkevmCardonaService = async () => {
+        const zkevmWeb3 = await getWeb3(config.cardonaRPC);
+        runZKEVMCardona(zkevmV1Cardonarecommendation, zkevmWeb3)
+            .then((_) => { })
+            .catch((e) => {
+                Logger.error(e);
+                Logger.info("Restarting zkem cardona service....");
+                startZkevmCardonaService();
+            });
+    };
+
+    //Start Pos Amoy service
+    startPosAmoyService();
+
+    //Start zkEVM Cardona service
+    startZkevmCardonaService();
+}
 
 //Start Api
 startApi();
