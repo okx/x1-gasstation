@@ -82,7 +82,7 @@ const startZkevmService = async () => {
 };
 
 //Start Pos service
-startPosService();
+// startPosService();
 
 //Start Zkevm service
 startZkevmService();
