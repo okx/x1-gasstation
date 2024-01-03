@@ -6,6 +6,7 @@ const router = express.Router();
 
 //Get Zkevm recommendation
 router.get("/", getZkevmV1Recommendation);
+router.get("/v1", getZkevmV1Recommendation);
 
 if (config.NODE_ENV === ('prod-testnet' || 'staging-testnet')) {
     //Get zkEVM Cardona recommendation
