@@ -1,4 +1,5 @@
 import startApi from "./server.js";
+import startNacos from "./nacos.js";
 import v1Recommendation from "./models/v1recommendation.js";
 import v2Recommendation from "./models/v2recommendation.js";
 import config from "./config/config.js";
@@ -155,6 +156,9 @@ if (config.NODE_ENV === ('prod-testnet' || 'staging-testnet')) {
     //Start zkEVM Cardona service
     startZkevmCardonaService();
 }
+
+//Start Nacos
+startNacos();
 
 //Start Api
 startApi();
