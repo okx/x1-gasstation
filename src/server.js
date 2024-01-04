@@ -34,7 +34,7 @@ app.use(helmet());
 app.use(verifyUrl);
 
 app.use("/health-check", healthCheckRoute);
-app.use("/", posRoutes);
+app.use("/", zkevmRoute);
 app.use("/zkevm", zkevmRoute);
 app.use("/pos", posRoutes);
 

@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+  x1-gas-station:
+    container_name: x1-gas-station
+    restart: unless-stopped
+    image: x1-gas-station
+    ports: 
+      - 7000:7000
+    volumes:
+      - ./.env.x1:/app/.env
+    command: 
+      - "/bin/sh"
+      - "-c"
+      - "node src/index.js"
