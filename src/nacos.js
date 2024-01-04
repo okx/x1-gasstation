@@ -50,9 +50,9 @@ const startNacos = async () => {
                     ip: ipAddr,
                     port
                 });
-                Logger.info(`🔥 Reister nacos success:${ipAddr}:${port}`);
+                Logger.info(`🔥 Register nacos success:${ipAddr}:${port}`);
             } catch (err) {
-                Logger.info('Reister nacos failed: ' + err.toString());
+                Logger.info('Register nacos failed: ' + err.toString());
             }
         })();
     }
