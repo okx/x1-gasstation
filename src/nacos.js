@@ -25,7 +25,6 @@ Logger.create({
 
 const startNacos = async () => {
     if (process.env.NacosURLs != null && process.env.NacosURLs != ""){
-        Logger.info(`🔥 start nacos....`);
         Logger.info(`${process.env.NacosURLs},${process.env.NacosNamespaceId},${process.env.NacosApplicationName},${process.env.NacosExternalListenAddr}`);
         const logger = console
         const providerServiceName = process.env.NacosApplicationName;
@@ -36,7 +35,7 @@ const startNacos = async () => {
             serverList: nacosServerAddress,
             namespace: providerNamespase,
         });
-        Logger.info('[Nacos] start register nacos');
+        Logger.info('Start register nacos...');
         (async () => {
             const allinstance = await client.getAllInstances()
             Logger.info('[Nacos]----allinstance----', allinstance)
@@ -51,9 +50,9 @@ const startNacos = async () => {
                     ip: ipAddr,
                     port
                 });
-                Logger.info(`🔥 start nacos success:${ipAddr}:${port}`);
+                Logger.info(`🔥 Reister nacos success:${ipAddr}:${port}`);
             } catch (err) {
-                Logger.info('[Nacos] Nacos reister failed: ' + err.toString());
+                Logger.info('Reister nacos failed: ' + err.toString());
             }
         })();
     }
