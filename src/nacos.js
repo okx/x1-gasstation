@@ -2,9 +2,10 @@ import { config } from "dotenv";
 import path from "path";
 import Logger from "./helpers/logger.js";
 import url from "url";
-import  NacosConfigClient from "nacos";
+import { createRequire } from 'module';
 
-const NacosNamingClient = NacosConfigClient;
+const require = createRequire(import.meta.url);
+const NacosNamingClient = require('nacos').NacosNamingClient;
 const logger = console;
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -27,14 +28,14 @@ const startNacos = async () => {
         Logger.info(`🔥 start nacos....`);
         Logger.info(`${process.env.NacosURLs},${process.env.NacosNamespaceId},${process.env.NacosApplicationName},${process.env.NacosExternalListenAddr}`);
 
-        const client = new NacosNamingClient.NacosConfigClient({
+        const client = new NacosNamingClient({
             logger,
-            serverList: process.env.NacosURLs, // replace to real nacos serverList
+            serverAddr: process.env.NacosURLs, // replace to real nacos serverList
             namespace: process.env.NacosNamespaceId,
           });
           await client.ready();
           
-          resultArray = process.env.NacosExternalListenAddr.split(',');
+          var resultArray = process.env.NacosExternalListenAddr.split(',');
           
           // registry instance
           await client.registerInstance(process.env.NacosApplicationName, {
