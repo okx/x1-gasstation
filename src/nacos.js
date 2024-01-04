@@ -27,23 +27,35 @@ const startNacos = async () => {
     if (process.env.NacosURLs != null && process.env.NacosURLs != ""){
         Logger.info(`🔥 start nacos....`);
         Logger.info(`${process.env.NacosURLs},${process.env.NacosNamespaceId},${process.env.NacosApplicationName},${process.env.NacosExternalListenAddr}`);
-
+        const logger = console
+        const providerServiceName = process.env.NacosApplicationName;
+        const nacosServerAddress = process.env.NacosURLs;
+        const providerNamespase = process.env.NacosNamespaceId;
         const client = new NacosNamingClient({
             logger,
-            serverAddr: process.env.NacosURLs, // replace to real nacos serverList
-            namespace: process.env.NacosNamespaceId,
-          });
-          await client.ready();
-          
-          var resultArray = process.env.NacosExternalListenAddr.split(',');
-          
-          // registry instance
-          await client.registerInstance(process.env.NacosApplicationName, {
-            ip: resultArray[0],
-            port: resultArray[1],
-          });
-
-          Logger.info(`🔥 start nacos success....`);
+            serverList: nacosServerAddress,
+            namespace: providerNamespase,
+        });
+        Logger.info('[Nacos] start register nacos');
+        (async () => {
+            const allinstance = await client.getAllInstances()
+            Logger.info('[Nacos]----allinstance----', allinstance)
+        });
+        (async () => {
+            try {
+                var resultArray = process.env.NacosExternalListenAddr.split(':');
+                var ipAddr = resultArray[0];
+                var port = resultArray[1];
+                await client.ready();
+                await client.registerInstance(providerServiceName, {
+                    ip: ipAddr,
+                    port
+                });
+                Logger.info(`🔥 start nacos success:${ipAddr}:${port}`);
+            } catch (err) {
+                Logger.info('[Nacos] Nacos reister failed: ' + err.toString());
+            }
+        })();
     }
 };
 
