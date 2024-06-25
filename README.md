@@ -1,6 +1,5 @@
 # maticgasstation
 
-test
 
 MaticGasStation Network is a REST API service that provides current gas price recommendations for Polygon PoS and Zkevm transactions. This service offers developers a convenient way to retrieve real-time gas prices and make informed decisions about transaction fees on the Polygon PoS and Zkevm network.
 
